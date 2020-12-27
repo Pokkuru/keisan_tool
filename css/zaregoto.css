@@ -1,0 +1,85 @@
+/*
+html{
+  overflow: initial;
+  height:100%;
+}
+body{
+  min-width: 100%;
+  min-height: 100;
+  margin: 0;
+  padding: 0;
+  height:100%;
+  width: 100%;
+  overflow-y: visible;
+}
+
+body > .contentsTree {
+height: auto;
+width: auto;
+}
+.contentsTree{
+height:100%;
+width: 100%;
+}
+*/
+/*
+.contentsTree{
+  position: relative;
+  margin-right: 220px;
+  margin-left: 220px;
+  margin-bottom: 20px;
+  top:-30px;
+  background-color: #EEE8AA;
+  overflow-x:hidden;
+  overflow-y: auto; 
+  max-width: 700px;
+  min-width: 300px;
+  min-height: 100%;
+  height: 100%;
+  padding-bottom: 50px;
+}
+
+.contentBoxContainer{
+  height: 100%;
+  margin-top: 0px;
+}
+.contentBox{
+  float: bottom;
+  position: relative;
+  margin-top: 0;
+  padding-top: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 15px;
+  background-color: white;
+  border: 7px solid #EEE8AA;
+}
+.date{
+  font-size: 14px;
+}
+.title{
+  font-size: 18px;
+  border-bottom:solid 1px black; 
+  cursor:pointer;
+}
+.tag{
+  font-size: 14px;
+}
+.diaryText{
+  font-size: 14px;
+  padding-top: 4px;
+}
+.snsButton{
+  padding-left: 20px;
+  margin-bottom: 20px;
+}
+
+.toPrevPage{
+  margin-left: 40%;
+  cursor:pointer;
+}
+.toNextPage{
+  margin-left: 20px;
+  cursor:pointer;
+}
+*/
