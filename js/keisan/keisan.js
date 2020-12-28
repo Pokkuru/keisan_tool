@@ -34,7 +34,7 @@ $(function(){
       questionMaxItem = $('#maxQues').val();
     }
 
-    doc = new jsPDF();
+    const doc = new jsPDF();
     doc.setFont("times");
 
     doc.text(88, 12, "Questions");  //PDF表題
