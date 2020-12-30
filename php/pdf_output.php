@@ -1,32 +1,27 @@
-<!--処理部-->
 <?php
-include "../lib/tcpdf/tcpdf.php";
+/*
+PDFの出力を行う
+*/
+
+require "../lib/tcpdf/tcpdf.php";
+require "./question_maker.php";
 
 if(isset($_POST['make_pdf'])) {
     MakePdf();
-} else if(isset($_POST['debug'])) {
-    echo("It,s debug mode");
+} else {
+    echo("ERROR!!: undefined value");
 }
 
+// PDFを作成するために呼び出す
 function MakePdf(){
     $tcpdf = new TCPDF();
-    $tcpdf -> setPrintHeader(false);    // ヘッダー線削除
+    $tcpdf -> setPrintHeader(false);
     $tcpdf -> AddPage();
     $tcpdf -> SetFont("kozgopromedium", "", 10); 
-    $html = <<< EOF
-    <style>
-        h1 {
-            font-size: 20pt;
-            color:black;
-            text-align: center;
-        }
-    </style>
-    <h1>計算プリント</h1>
-    <p>
-        これはサンプル出力
-    </p>
-    EOF;
     
+    // 問題のHTML作成と追加
+    $html = MakeSample();
+   
     $tcpdf->writeHTML($html); // 表示htmlを設定
     $filename = "print.pdf";
     ob_end_clean();
