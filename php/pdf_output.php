@@ -6,6 +6,7 @@ PDFの出力を行う
 require "../lib/tcpdf/tcpdf.php";
 
 if(isset($_POST['make_pdf'])) {
+    echo("PDF作るよ");
     MakePdf();
 } else {
     echo("ERROR!!: undefined value");
@@ -24,7 +25,7 @@ function MakePdf(){
     $tcpdf->writeHTML($html); // 表示htmlを設定
     $filename = "print.pdf";
     ob_end_clean();
-    $tcpdf->Output($filename, 'I'); // pdf表示設定
+    $tcpdf->Output($filename, 'D'); // pdf表示設定
 }
 
 ?>
