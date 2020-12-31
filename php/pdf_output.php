@@ -4,7 +4,6 @@ PDFの出力を行う
 */
 
 require "../lib/tcpdf/tcpdf.php";
-require "./question_maker.php";
 
 if(isset($_POST['make_pdf'])) {
     MakePdf();
