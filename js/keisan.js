@@ -1,39 +1,48 @@
 //===========
 // グローバル変数
 //===========
-var questions = []; //問題
-var questionMaxItem = 200;
-var generateFlag = false; //初回検出用
-var doc;  //pdfドキュメントのソース
-var vertical = 30; //書き込み座標の縦
-var horizontal = 10; //書き込み座標の横
-var text;
+let min_val;        // 値の範囲の最小
+let max_val;        // 値の範囲の最大
+let max_ques;       // 問題の数
+let need_date;      // 日付の有無
+let need_negative;  // 負の数の有無
+let ques_type;      // 問題種類
 
-// PDF出力
+// PDF出力ボタン
 $('#make_pdf').click(function(){
+  min_val = $('#minVal').val();
+  max_val = $('#maxVal').val();
+  max_ques = $('#maxQues').val();
+  need_negative = $('#needNegative').prop("checked");
+  need_date = $('#needDate').prop("checked");
+  ques_type = $('#q_type').val();
+
   // 数値でない入力を弾く
-  if(!isFinite($('#minVal').val())){
+  if(!isFinite(min_val)){
     alert("エラー：値の範囲に入力された値が数値でないため動作を停止しました");
     return(0);
   }
-  if(!isFinite($('#maxVal').val())){
+  if(!isFinite(max_val)){
     alert("エラー：値の範囲に入力された値が数値でないため動作を停止しました");
     return(0);
   }
-  if(!isFinite($('#maxQues').val())){
+  if(!isFinite(max_ques)){
     alert("エラー：問題数に入力された値が数値でないため動作を停止しました");
     return(0);
-  }else if($('#maxQues').val() > 1000){
+  }else if(max_ques > 1000){
     alert("問題数が多すぎます！1000題以下までしか出力できません");
     return(0);
-  }else{
-    questionMaxItem = $('#maxQues').val();
   }
 
-  if($('#dateExist').prop("checked")){
-    doc.text(150, 12, dateMaker()); //日付
-  }
-
+  // デバッグ情報
+  console.log("最小の値：" + min_val);
+  console.log("最大の値：" + max_val);
+  console.log("問題数：" + max_ques);
+  console.log("負数の有無：" + need_negative);
+  console.log("日付の有無：" + need_date);
+  console.log("問題種類：" + ques_type);
+  
+  /*
   var i = 0;
   if($('#q_type').val()!= "simultaneousEquations" && $('#q_type').val()!= "linearGraph"){
     //一般計算問題（四則・一次方程式）生成部
@@ -53,7 +62,7 @@ $('#make_pdf').click(function(){
       i++;
       vertical += 20;
     }
-  }else if($('#q_type').val()== "simultaneousEquations"){
+  } else if ($('#q_type').val()== "simultaneousEquations"){
     //多段計算問題（連立方程式）生成部
     while(questionMaxItem > i){
       if(i % 8 == 0 && i > 0){
@@ -96,7 +105,6 @@ $('#make_pdf').click(function(){
       i += 1;
     }
   }
-
   //解答生成部
   if($('#q_type').val() != "linearGraph"){
     doc.addPage();
@@ -167,6 +175,7 @@ $('#make_pdf').click(function(){
     }
   }
   doc.output('datauri');  //PDF出力
+  */
 });
 
 //日付
