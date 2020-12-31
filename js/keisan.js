@@ -1,12 +1,13 @@
-//===========
-// グローバル変数
-//===========
+// 計算プリントの生成の指示中心
+
 let min_val;        // 値の範囲の最小
 let max_val;        // 値の範囲の最大
 let max_ques;       // 問題の数
 let need_date;      // 日付の有無
 let need_negative;  // 負の数の有無
 let ques_type;      // 問題種類
+let num_type;       // 数字の種類（整数、小数）
+let questions = [];
 
 // PDF出力ボタン
 $('#make_pdf').click(function(){
@@ -16,6 +17,7 @@ $('#make_pdf').click(function(){
   need_negative = $('#needNegative').prop("checked");
   need_date = $('#needDate').prop("checked");
   ques_type = $('#q_type').val();
+  num_type = $('#n_type').val();
 
   // 数値でない入力を弾く
   if(!isFinite(min_val)){
@@ -42,153 +44,14 @@ $('#make_pdf').click(function(){
   console.log("日付の有無：" + need_date);
   console.log("問題種類：" + ques_type);
   
-  /*
+  // 問題生成部
   var i = 0;
-  if($('#q_type').val()!= "simultaneousEquations" && $('#q_type').val()!= "linearGraph"){
-    //一般計算問題（四則・一次方程式）生成部
-    while(questionMaxItem > i){
-      if(i % 26 == 0 && i > 0){
-        doc.addPage();
-        centerline(); //中心線描画
-        horizontal = 10;
-        vertical = 30;
-      }else if(0 == i % 13 && i > 0){
-        horizontal = 110;
-        vertical = 30;
-      }
-      questions[i] = new QuestionClass(i+1, $('#q_type').val(), $('#n_type').val());
+  if(ques_type == "addition" || ques_type == "subtraction" || ques_type == "multiplication" || ques_type == "division"){
+    // 四則計算問題生成部
+    for(var i = 0; i < max_ques; i++){
+      questions.push(new QuestionClass());
       questions[i].create();
-      console.log(questions[i].retAns());
-      i++;
-      vertical += 20;
-    }
-  } else if ($('#q_type').val()== "simultaneousEquations"){
-    //多段計算問題（連立方程式）生成部
-    while(questionMaxItem > i){
-      if(i % 8 == 0 && i > 0){
-        doc.addPage();
-        centerline(); //中心線描画
-        vertical = 30; //書き込み座標の縦
-        horizontal = 10; //書き込み座標の横
-      }else if(i % 4 == 0 && i > 0){
-        horizontal = 110;
-        vertical = 30;
-      }
-      doc.setFontSize(15);
-      doc.text("(" + parseInt(i+1) + ")", horizontal, vertical-3);
-      doc.setFontSize(50);
-      doc.text("{", horizontal+10, vertical);
-      doc.setFontSize(15);
-      questions[i] = new QuestionClass(i+1, $('#q_type').val(), $('#n_type').val());
-      questions[i].create();
-      vertical += 70;
-      i += 1;
-    }
-  }else if($('#q_type').val() == "linearGraph"){
-    //一次グラフ用
-    while(questionMaxItem > i){
-      if(i % 6 == 0 && i > 0){
-        doc.addPage();
-        centerline(); //中心線描画
-        vertical = 30; //書き込み座標の縦
-        horizontal = 10; //書き込み座標の横
-      }else if(i % 3 == 0 && i > 0){
-        horizontal = 110;
-        vertical = 30;
-      }
-      doc.setFontSize(15);
-      doc.text("(" + parseInt(i+1) + ")", horizontal, vertical-3);
-      questions[i] = new QuestionClass(i+1, $('#q_type').val(), $('#n_type').val());
-      emptyGraphMaker(horizontal+10, vertical+5);
-      questions[i].create();
-      vertical += 90;
-      i += 1;
+      console.log(questions[i].returnQues() + " " + questions[i].returnAnswer());
     }
   }
-  //解答生成部
-  if($('#q_type').val() != "linearGraph"){
-    doc.addPage();
-    doc.text(90, 12, "Answers");  //PDF表題
-    centerline(); //中心線描画
-    horizontal = 10;
-    vertical = 30;
-    i = 0;
-    if($('#q_type').val()!= "simultaneousEquations" && $('#q_type').val()!= "linearGraph" && $('#q_type').val()!= "expand" && $('#q_type').val()!= "factorization"){
-      while(questionMaxItem > i){
-        if(0 == i % 150 && i > 0){
-          doc.addPage();
-          centerline(); //中心線描画
-          horizontal = 10;
-          vertical = 30;
-        }else if(0 == i % 75 && i > 0){
-          horizontal = 110;
-          vertical = 30;
-        }else if(0 == i % 3 && i > 0){
-          if(horizontal > 100){
-            horizontal = 110
-          }else{
-            horizontal = 10;
-          }
-          vertical += 10;
-        }
-        questions[i].writeAns();
-        i ++;
-        horizontal += 30;
-      }
-    }else if($('#q_type').val()== "simultaneousEquations"){
-      while(questionMaxItem > i){
-        if(i % 108 == 0 && i > 0){
-          doc.addPage();
-          centerline(); //中心線描画
-          horizontal = 10;
-          vertical = 30;
-        }else if(i % 54 == 0 && i > 0){
-          horizontal = 110;
-          vertical = 30;
-        }else if(i%2 == 0 && i > 0){
-          if(horizontal > 100){
-            horizontal = 110;
-          }else{
-            horizontal = 10;
-          }
-          vertical += 10;
-        }
-        questions[i].writeAns();
-        i++;
-        horizontal += 45;
-      }
-    }else if($('#q_type').val() == "expand" || $('#q_type').val() == "factorization"){
-      while(questionMaxItem > i){
-        if(i%52 == 0 && i > 0){
-          doc.addPage();
-          centerline(); //中心線描画
-          horizontal = 10;
-          vertical = 30;
-        }else if(i%26 == 0 && i > 0){
-          horizontal = 110;
-          vertical = 30;
-        }
-        questions[i].writeAns();
-        i++;
-        vertical += 10;
-      }
-    }
-  }
-  doc.output('datauri');  //PDF出力
-  */
 });
-
-//日付
-function dateMaker(){
-  var date = new Date();
-  var y = date.getFullYear();
-  var m = date.getMonth()+1;
-  var d = date.getDate();
-  if(m < 10){
-    m = "0" + m;
-  }
-  if(d < 10){
-    d = "0" + d;
-  }
-  return(y + "." + m + "." + d);
-}
