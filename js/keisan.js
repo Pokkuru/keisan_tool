@@ -6,7 +6,6 @@ let max_ques;       // 問題の数
 let need_date;      // 日付の有無
 let need_negative;  // 負の数の有無
 let ques_type;      // 問題種類
-let num_type;       // 数字の種類（整数、小数）
 let questions = [];
 
 // PDF出力ボタン
@@ -17,7 +16,6 @@ $('#make_pdf').click(function(){
   need_negative = $('#needNegative').prop("checked");
   need_date = $('#needDate').prop("checked");
   ques_type = $('#q_type').val();
-  num_type = $('#n_type').val();
 
   // 数値でない入力を弾く
   if(!isFinite(min_val)){
@@ -45,13 +43,32 @@ $('#make_pdf').click(function(){
   console.log("問題種類：" + ques_type);
   
   // 問題生成部
-  var i = 0;
   if(ques_type == "addition" || ques_type == "subtraction" || ques_type == "multiplication" || ques_type == "division"){
     // 四則計算問題生成部
     for(var i = 0; i < max_ques; i++){
       questions.push(new QuestionClass());
       questions[i].create();
-      console.log(questions[i].returnQues() + " " + questions[i].returnAnswer());
     }
   }
+
+  PostPHP().done(function(data, status, xhr) {
+    //成功時の処理
+    console.log("成功");
+  }).fail(function(XMLHttpRequest, status, errorThrown) {
+    //失敗時の処理
+    console.log(XMLHttpRequest);
+    console.log(errorThrown);
+  });
 });
+
+function PostPHP(){
+  return $.ajax({
+    url:'./php/pdf_output.php',
+    type:'GET',
+    //dataType: 'JSON',
+    data:{
+      make_pdf: true
+    }
+  })
+}
+

@@ -9,11 +9,11 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 <link href="./css/bs_info.css" rel="stylesheet" type="text/css">
 <link href="./css/style.css" rel="stylesheet" type="text/css">
-
 </head>
+
 <body>
 <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
-    <div class="container-fulid">
+    <div class="container-fulid px-4">
         <a class="navbar-brand" href="https://chronos-infotech.com/">クロノス情報研究所</a>
     </div>
 </nav>
@@ -25,7 +25,6 @@
         使用方法
         <ol>
             <li>計算問題の種類を選ぶ</li>
-            <li>数字の種類を選ぶ</li>
             <li>使用する値の範囲を決める</li>
             <li>問題数を入力する<b>18題で1ページ</b>埋まります
             <li>負の数の有無を選ぶ</li>
@@ -37,7 +36,7 @@
 
 <main class="container mt-4 mb-4">
     <div class="bg-light p-4 rounded">
-        <form>
+        <form action="keisan.php" method="post">
             <div class="form-group">
                 <label class="control-label">問題種類</label>
                 <select class="form-control" id="q_type">
@@ -45,14 +44,6 @@
                     <option value="subtraction">ひき算</option>
                     <option value="multiplication">かけ算</option>
                     <option value="division">わり算</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label class="control-label">数字種類</label>
-                <select class="form-control" id="n_type">
-                    <option value="integer">整数</option>
-                    <option value="decimal">小数</option>
                 </select>
             </div>
 
@@ -68,7 +59,7 @@
 
             <div class="form-group">
                 <label class="control-label">問題数</label>
-                <input type="text" class="form-control" id="maxQues" value="26">
+                <input type="text" class="form-control" id="maxQues" value="18">
             </div>
 
             <div class="form-group">
@@ -90,10 +81,12 @@
                     </label>
                 </div>
             </div>
+
+            <div class="form-group d-grid gap-2 mt-4">
+                <button type="submit" name="make_pdf" class="btn btn-primary btn-lg btn-block">問題作成開始</button>
+            </div>
         </form>
-        <div class="d-grid gap-2 mt-4">
-            <button class="btn btn-primary btn-lg btn-block" id="make_pdf">問題作成開始</button>
-        </div>
+
     </div>
 </main>
 
@@ -103,6 +96,31 @@
     </div>
 </footer>
 
+<?php
+require "./lib/tcpdf/tcpdf.php";
+require "./php/question_maker.php";
+
+if(isset($_POST['make_pdf'])) {
+    MakePdf();
+}
+
+// PDFを作成するために呼び出す
+function MakePdf(){
+    $tcpdf = new TCPDF();
+    $tcpdf -> setPrintHeader(false);
+    $tcpdf -> AddPage();
+    $tcpdf -> SetFont("kozgopromedium", "", 10); 
+    
+    // 問題のHTML作成と追加
+    $html = MakeSample();
+   
+    $tcpdf->writeHTML($html); // 表示htmlを設定
+    $filename = "print.pdf";
+    ob_end_clean();
+    $return_value = $tcpdf->Output($filename, 'I'); // pdf表示設定
+    return($return_value);
+}
+?>
 </body>
 
 <!--JavaScript-->

@@ -46,25 +46,13 @@ function multiplication(a, b){
 }
 
 // 割り算
-function division(a,  b, digit){
-  // 割り切れない数の場合少数を計算するのが面倒なのでパス
+function division(a,  b){
+  // 割り切れない数の場合パス
   temp = a/b;
   while(!isInteger(temp) || a%b > 0){
-    a = randomNumForArithmetic(min_val, max_val ,digit, need_negative);
-    b = randomNumForArithmetic(min_val, max_val ,digit, need_negative);
+    a = randomNumArithmetic();
+    b = randomNumArithmetic();
     temp = a/b;
-  }
-  if(num_type == "decimal"){
-    var c = a / b;
-    c *= 10;
-    c = Math.round(c) / 10;
-    var q = kakkoArithmetic(a) + " ÷ " + kakkoArithmetic(b);
-    return c;
-  }else{
-    parseInt(a);
-    parseInt(b);
-    var q = kakkoArithmetic(a) + " ÷ " + kakkoArithmetic(b);
-    return a / b;
   }
 }
 

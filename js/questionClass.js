@@ -18,9 +18,8 @@ QuestionClass.prototype.create = function(){
   switch(ques_type){
     case "addition": case "subtraction": case "multiplication": case "division":
       // 四則計算
-      if(num_type == "decimal"){var digit = 1;}else{var digit = 0;}
-      var a = randomNumArithmetic(min_val, max_val ,digit, need_negative);
-      var b = randomNumArithmetic(min_val, max_val ,digit, need_negative);
+      var a = randomNumArithmetic();
+      var b = randomNumArithmetic();
       break;
     default:
       console.log("error @数字作成：計算のタイプが存在しません");
@@ -43,7 +42,7 @@ QuestionClass.prototype.create = function(){
       break;
     case "division":
       this.ques = a + " ÷ " + b;
-      this.ans = division(a, b, digit);
+      this.ans = division(a, b);
       break;
   }
 }
